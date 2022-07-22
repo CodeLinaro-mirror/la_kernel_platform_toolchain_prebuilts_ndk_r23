@@ -29,6 +29,8 @@ class FuzzerPassWrapRegionsInSelections : public FuzzerPass {
       FuzzerContext* fuzzer_context,
       protobufs::TransformationSequence* transformations);
 
+  ~FuzzerPassWrapRegionsInSelections() override;
+
   void Apply() override;
 
  private:

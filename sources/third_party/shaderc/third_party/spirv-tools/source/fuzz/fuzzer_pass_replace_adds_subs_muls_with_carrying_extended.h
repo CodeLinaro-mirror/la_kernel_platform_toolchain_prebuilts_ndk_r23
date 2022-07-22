@@ -31,6 +31,8 @@ class FuzzerPassReplaceAddsSubsMulsWithCarryingExtended : public FuzzerPass {
       FuzzerContext* fuzzer_context,
       protobufs::TransformationSequence* transformations);
 
+  ~FuzzerPassReplaceAddsSubsMulsWithCarryingExtended() override;
+
   void Apply() override;
 };
 

@@ -26,7 +26,7 @@ namespace fuzz {
 class TransformationMergeBlocks : public Transformation {
  public:
   explicit TransformationMergeBlocks(
-      protobufs::TransformationMergeBlocks message);
+      const protobufs::TransformationMergeBlocks& message);
 
   TransformationMergeBlocks(uint32_t block_id);
 

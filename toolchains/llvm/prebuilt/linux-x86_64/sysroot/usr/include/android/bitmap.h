@@ -31,8 +31,18 @@
 #include <stddef.h>
 #include <jni.h>
 
-#if !defined(__INTRODUCED_IN)
-#define __INTRODUCED_IN(__api_level) /* nothing */
+#ifndef __ANDROID__
+    // Value copied from 'bionic/libc/include/android/api-level.h' which is not available on
+    // non Android systems. It is set to 10000 which is same as __ANDROID_API_FUTURE__ value.
+    #ifndef __ANDROID_API__
+        #define __ANDROID_API__ 10000
+    #endif
+
+    // Value copied from 'bionic/libc/include/android/versioning.h' which is not available on
+    // non Android systems
+    #ifndef __INTRODUCED_IN
+        #define __INTRODUCED_IN(api_level)
+    #endif
 #endif
 
 #ifdef __cplusplus
@@ -241,7 +251,6 @@ typedef struct AHardwareBuffer AHardwareBuffer;
  *
  *  Available since API level 30.
  *
- *  @param env Handle to the JNI environment pointer.
  *  @param bitmap Handle to an android.graphics.Bitmap.
  *  @param outBuffer On success, is set to a pointer to the
  *         {@link AHardwareBuffer} associated with bitmap. This acquires

@@ -26,7 +26,7 @@ namespace fuzz {
 class TransformationAddGlobalUndef : public Transformation {
  public:
   explicit TransformationAddGlobalUndef(
-      protobufs::TransformationAddGlobalUndef message);
+      const protobufs::TransformationAddGlobalUndef& message);
 
   TransformationAddGlobalUndef(uint32_t fresh_id, uint32_t type_id);
 

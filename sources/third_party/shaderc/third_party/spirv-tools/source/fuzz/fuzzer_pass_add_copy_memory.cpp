@@ -29,6 +29,8 @@ FuzzerPassAddCopyMemory::FuzzerPassAddCopyMemory(
     : FuzzerPass(ir_context, transformation_context, fuzzer_context,
                  transformations) {}
 
+FuzzerPassAddCopyMemory::~FuzzerPassAddCopyMemory() = default;
+
 void FuzzerPassAddCopyMemory::Apply() {
   ForEachInstructionWithInstructionDescriptor(
       [this](opt::Function* function, opt::BasicBlock* block,

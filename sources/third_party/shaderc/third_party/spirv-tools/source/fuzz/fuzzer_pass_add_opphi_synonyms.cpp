@@ -27,6 +27,8 @@ FuzzerPassAddOpPhiSynonyms::FuzzerPassAddOpPhiSynonyms(
     : FuzzerPass(ir_context, transformation_context, fuzzer_context,
                  transformations) {}
 
+FuzzerPassAddOpPhiSynonyms::~FuzzerPassAddOpPhiSynonyms() = default;
+
 void FuzzerPassAddOpPhiSynonyms::Apply() {
   // Get a list of synonymous ids with the same type that can be used in the
   // same OpPhi instruction.

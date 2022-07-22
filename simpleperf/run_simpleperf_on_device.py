@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 #
 # Copyright (C) 2017 The Android Open Source Project
 #
@@ -23,7 +23,6 @@ import subprocess
 import sys
 from simpleperf_utils import AdbHelper, disable_debug_log, get_target_binary_path
 
-
 def main():
     disable_debug_log()
     adb = AdbHelper()
@@ -33,7 +32,6 @@ def main():
     adb.check_run(['shell', 'chmod', 'a+x', '/data/local/tmp/simpleperf'])
     shell_cmd = 'cd /data/local/tmp && ./simpleperf ' + ' '.join(sys.argv[1:])
     sys.exit(subprocess.call([adb.adb_path, 'shell', shell_cmd]))
-
 
 if __name__ == '__main__':
     main()

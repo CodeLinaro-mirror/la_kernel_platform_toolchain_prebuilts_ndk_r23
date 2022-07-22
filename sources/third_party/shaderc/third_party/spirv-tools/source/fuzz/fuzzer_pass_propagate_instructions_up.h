@@ -29,6 +29,8 @@ class FuzzerPassPropagateInstructionsUp : public FuzzerPass {
       FuzzerContext* fuzzer_context,
       protobufs::TransformationSequence* transformations);
 
+  ~FuzzerPassPropagateInstructionsUp() override;
+
   void Apply() override;
 };
 

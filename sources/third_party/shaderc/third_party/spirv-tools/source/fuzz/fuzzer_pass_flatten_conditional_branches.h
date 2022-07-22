@@ -27,6 +27,8 @@ class FuzzerPassFlattenConditionalBranches : public FuzzerPass {
       FuzzerContext* fuzzer_context,
       protobufs::TransformationSequence* transformations);
 
+  ~FuzzerPassFlattenConditionalBranches() override;
+
   void Apply() override;
 
  private:

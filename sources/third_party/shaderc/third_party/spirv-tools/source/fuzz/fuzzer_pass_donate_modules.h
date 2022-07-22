@@ -33,6 +33,8 @@ class FuzzerPassDonateModules : public FuzzerPass {
       protobufs::TransformationSequence* transformations,
       const std::vector<fuzzerutil::ModuleSupplier>& donor_suppliers);
 
+  ~FuzzerPassDonateModules();
+
   void Apply() override;
 
   // Donates the global declarations and functions of |donor_ir_context| into

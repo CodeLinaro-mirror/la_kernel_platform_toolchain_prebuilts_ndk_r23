@@ -30,6 +30,8 @@ class FuzzerPassAdjustBranchWeights : public FuzzerPass {
       FuzzerContext* fuzzer_context,
       protobufs::TransformationSequence* transformations);
 
+  ~FuzzerPassAdjustBranchWeights();
+
   void Apply() override;
 };
 

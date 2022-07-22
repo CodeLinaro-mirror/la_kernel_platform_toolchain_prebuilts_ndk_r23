@@ -26,7 +26,7 @@ namespace fuzz {
 class TransformationReplaceIdWithSynonym : public Transformation {
  public:
   explicit TransformationReplaceIdWithSynonym(
-      protobufs::TransformationReplaceIdWithSynonym message);
+      const protobufs::TransformationReplaceIdWithSynonym& message);
 
   TransformationReplaceIdWithSynonym(
       protobufs::IdUseDescriptor id_use_descriptor, uint32_t synonymous_id);

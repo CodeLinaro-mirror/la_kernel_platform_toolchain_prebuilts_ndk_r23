@@ -150,11 +150,6 @@ ifndef HOST_OS
         endif
         # We should not be there, but just in case !
         ifneq (,$(findstring CYGWIN,$(UNAME)))
-            $(call __ndk_warning,Unsupported build environment CYGWIN.)
-            HOST_OS := windows
-        endif
-        ifneq (,$(findstring MINGW64,$(UNAME)))
-            $(call __ndk_warning,Unsupported build environment MSYS.)
             HOST_OS := windows
         endif
         ifeq ($(HOST_OS),)

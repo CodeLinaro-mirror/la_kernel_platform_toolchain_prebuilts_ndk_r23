@@ -30,6 +30,8 @@ class FuzzerPassPushIdsThroughVariables : public FuzzerPass {
       FuzzerContext* fuzzer_context,
       protobufs::TransformationSequence* transformations);
 
+  ~FuzzerPassPushIdsThroughVariables() override;
+
   void Apply() override;
 };
 

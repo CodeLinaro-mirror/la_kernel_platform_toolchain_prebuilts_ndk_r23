@@ -29,6 +29,9 @@ FuzzerPassWrapRegionsInSelections::FuzzerPassWrapRegionsInSelections(
     : FuzzerPass(ir_context, transformation_context, fuzzer_context,
                  transformations) {}
 
+FuzzerPassWrapRegionsInSelections::~FuzzerPassWrapRegionsInSelections() =
+    default;
+
 void FuzzerPassWrapRegionsInSelections::Apply() {
   for (auto& function : *GetIRContext()->module()) {
     if (!GetFuzzerContext()->ChoosePercentage(

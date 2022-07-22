@@ -50,6 +50,4 @@ typedef const native_handle_t ACameraWindowType;
 typedef ANativeWindow ACameraWindowType;
 #endif
 
-/** @} */
-
 #endif //_NDK_CAMERA_WINDOW_TYPE_H

@@ -31,6 +31,9 @@ FuzzerPassSwapBranchConditionalOperands::
     : FuzzerPass(ir_context, transformation_context, fuzzer_context,
                  transformations) {}
 
+FuzzerPassSwapBranchConditionalOperands::
+    ~FuzzerPassSwapBranchConditionalOperands() = default;
+
 void FuzzerPassSwapBranchConditionalOperands::Apply() {
   ForEachInstructionWithInstructionDescriptor(
       [this](opt::Function* /*unused*/, opt::BasicBlock* /*unused*/,

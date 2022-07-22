@@ -20,8 +20,8 @@ namespace spvtools {
 namespace fuzz {
 
 TransformationAddDeadBlock::TransformationAddDeadBlock(
-    protobufs::TransformationAddDeadBlock message)
-    : message_(std::move(message)) {}
+    const spvtools::fuzz::protobufs::TransformationAddDeadBlock& message)
+    : message_(message) {}
 
 TransformationAddDeadBlock::TransformationAddDeadBlock(uint32_t fresh_id,
                                                        uint32_t existing_block,

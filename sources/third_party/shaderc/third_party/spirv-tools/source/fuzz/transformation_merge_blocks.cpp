@@ -21,8 +21,8 @@ namespace spvtools {
 namespace fuzz {
 
 TransformationMergeBlocks::TransformationMergeBlocks(
-    protobufs::TransformationMergeBlocks message)
-    : message_(std::move(message)) {}
+    const spvtools::fuzz::protobufs::TransformationMergeBlocks& message)
+    : message_(message) {}
 
 TransformationMergeBlocks::TransformationMergeBlocks(uint32_t block_id) {
   message_.set_block_id(block_id);

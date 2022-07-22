@@ -29,6 +29,8 @@ class FuzzerPassSwapBranchConditionalOperands : public FuzzerPass {
       FuzzerContext* fuzzer_context,
       protobufs::TransformationSequence* transformations);
 
+  ~FuzzerPassSwapBranchConditionalOperands() override;
+
   void Apply() override;
 };
 

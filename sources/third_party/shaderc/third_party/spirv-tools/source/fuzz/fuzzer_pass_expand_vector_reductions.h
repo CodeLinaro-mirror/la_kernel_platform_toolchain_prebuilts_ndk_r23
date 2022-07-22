@@ -30,6 +30,8 @@ class FuzzerPassExpandVectorReductions : public FuzzerPass {
       FuzzerContext* fuzzer_context,
       protobufs::TransformationSequence* transformations);
 
+  ~FuzzerPassExpandVectorReductions();
+
   void Apply() override;
 };
 

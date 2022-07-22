@@ -255,7 +255,7 @@ protected:
     bool nanMinMaxClamp;               // true if use NMin/NMax/NClamp instead of FMin/FMax/FClamp
     spv::Id stdBuiltins;
     spv::Id nonSemanticDebugPrintf;
-    std::unordered_map<std::string, spv::Id> extBuiltinMap;
+    std::unordered_map<const char*, spv::Id> extBuiltinMap;
 
     std::unordered_map<long long, spv::Id> symbolValues;
     std::unordered_set<long long> rValueParameters;  // set of formal function parameters passed as rValues,
@@ -1493,7 +1493,7 @@ TGlslangToSpvTraverser::TGlslangToSpvTraverser(unsigned int spvVersion,
 
     if (glslangIntermediate->usingPhysicalStorageBuffer()) {
         addressingModel = spv::AddressingModelPhysicalStorageBuffer64EXT;
-        builder.addIncorporatedExtension(spv::E_SPV_KHR_physical_storage_buffer, spv::Spv_1_5);
+        builder.addIncorporatedExtension(spv::E_SPV_EXT_physical_storage_buffer, spv::Spv_1_5);
         builder.addCapability(spv::CapabilityPhysicalStorageBufferAddressesEXT);
     }
     if (glslangIntermediate->usingVulkanMemoryModel()) {
@@ -1551,16 +1551,15 @@ TGlslangToSpvTraverser::TGlslangToSpvTraverser(unsigned int spvVersion,
             builder.addExtension(spv::E_SPV_KHR_post_depth_coverage);
         }
 
-        if (glslangIntermediate->isDepthReplacing())
+        if (glslangIntermediate->getDepth() != glslang::EldUnchanged && glslangIntermediate->isDepthReplacing())
             builder.addExecutionMode(shaderEntry, spv::ExecutionModeDepthReplacing);
 
 #ifndef GLSLANG_WEB
 
         switch(glslangIntermediate->getDepth()) {
-        case glslang::EldGreater:   mode = spv::ExecutionModeDepthGreater;   break;
-        case glslang::EldLess:      mode = spv::ExecutionModeDepthLess;      break;
-        case glslang::EldUnchanged: mode = spv::ExecutionModeDepthUnchanged; break;
-        default:                    mode = spv::ExecutionModeMax;            break;
+        case glslang::EldGreater:  mode = spv::ExecutionModeDepthGreater; break;
+        case glslang::EldLess:     mode = spv::ExecutionModeDepthLess;    break;
+        default:                   mode = spv::ExecutionModeMax;          break;
         }
         if (mode != spv::ExecutionModeMax)
             builder.addExecutionMode(shaderEntry, (spv::ExecutionMode)mode);
@@ -2301,8 +2300,7 @@ bool TGlslangToSpvTraverser::visitUnary(glslang::TVisit /* visit */, glslang::TI
     if (node->getOp() == glslang::EOpAtomicCounterIncrement ||
         node->getOp() == glslang::EOpAtomicCounterDecrement ||
         node->getOp() == glslang::EOpAtomicCounter          ||
-        (node->getOp() == glslang::EOpInterpolateAtCentroid &&
-          glslangIntermediate->getSource() != glslang::EShSourceHlsl)  ||
+        node->getOp() == glslang::EOpInterpolateAtCentroid  ||
         node->getOp() == glslang::EOpRayQueryProceed        ||
         node->getOp() == glslang::EOpRayQueryGetRayTMin     ||
         node->getOp() == glslang::EOpRayQueryGetRayFlags    ||
@@ -2785,7 +2783,6 @@ bool TGlslangToSpvTraverser::visitAggregate(glslang::TVisit visit, glslang::TInt
         break;
 
     case glslang::EOpAtomicAdd:
-    case glslang::EOpAtomicSubtract:
     case glslang::EOpAtomicMin:
     case glslang::EOpAtomicMax:
     case glslang::EOpAtomicAnd:
@@ -2957,7 +2954,6 @@ bool TGlslangToSpvTraverser::visitAggregate(glslang::TVisit visit, glslang::TInt
             break;
 
         case glslang::EOpAtomicAdd:
-        case glslang::EOpAtomicSubtract:
         case glslang::EOpAtomicMin:
         case glslang::EOpAtomicMax:
         case glslang::EOpAtomicAnd:
@@ -2978,13 +2974,7 @@ bool TGlslangToSpvTraverser::visitAggregate(glslang::TVisit visit, glslang::TInt
         case glslang::EOpInterpolateAtOffset:
         case glslang::EOpInterpolateAtVertex:
             if (arg == 0) {
-                // If GLSL, use the address of the interpolant argument.
-                // If HLSL, use an internal version of OpInterolates that takes
-                // the rvalue of the interpolant. A fixup pass in spirv-opt
-                // legalization will remove the OpLoad and convert to an lvalue.
-                // Had to do this because legalization will only propagate a
-                // builtin into an rvalue.
-                lvalue = glslangIntermediate->getSource() != glslang::EShSourceHlsl;
+                lvalue = true;
 
                 // Does it need a swizzle inversion?  If so, evaluation is inverted;
                 // operate first on the swizzle base, then apply the swizzle.
@@ -3173,9 +3163,7 @@ bool TGlslangToSpvTraverser::visitAggregate(glslang::TVisit visit, glslang::TInt
 #endif
     if (atomic) {
         // Handle all atomics
-        glslang::TBasicType typeProxy = (node->getOp() == glslang::EOpAtomicStore)
-            ? node->getSequence()[0]->getAsTyped()->getBasicType() : node->getBasicType();
-        result = createAtomicOperation(node->getOp(), precision, resultType(), operands, typeProxy,
+        result = createAtomicOperation(node->getOp(), precision, resultType(), operands, node->getBasicType(),
             lvalueCoherentFlags);
     } else if (node->getOp() == glslang::EOpDebugPrintf) {
         if (!nonSemanticDebugPrintf) {
@@ -6843,6 +6831,9 @@ spv::Id TGlslangToSpvTraverser::createConversion(glslang::TOperator op, OpDecora
         break;
     case glslang::EOpConvPtrToUvec2:
     case glslang::EOpConvUvec2ToPtr:
+        if (builder.isVector(operand))
+            builder.promoteIncorporatedExtension(spv::E_SPV_EXT_physical_storage_buffer,
+                                                 spv::E_SPV_KHR_physical_storage_buffer, spv::Spv_1_5);
         convOp = spv::OpBitcast;
         break;
 #endif
@@ -6900,7 +6891,6 @@ spv::Id TGlslangToSpvTraverser::createAtomicOperation(glslang::TOperator op, spv
                 builder.addCapability(spv::CapabilityAtomicFloat64AddEXT);
         }
         break;
-    case glslang::EOpAtomicSubtract:
     case glslang::EOpAtomicCounterSubtract:
         opCode = spv::OpAtomicISub;
         break;

@@ -654,15 +654,18 @@ spv_result_t ValidateStructuredSelections(
                << "Selection must be structured";
       }
     } else if (terminator->opcode() == SpvOpSwitch) {
-      if (!merge) {
-        return _.diag(SPV_ERROR_INVALID_CFG, terminator)
-               << "OpSwitch must be preceeded by an OpSelectionMerge "
-                  "instruction";
-      }
-      // Mark the targets as seen.
+      uint32_t count = 0;
+      // Mark the targets as seen now, but only error out if this block was
+      // missing a merge instruction and there were multiple unseen labels.
       for (uint32_t i = 1; i < terminator->operands().size(); i += 2) {
         const auto target = terminator->GetOperandAs<uint32_t>(i);
-        seen.insert(target);
+        if (seen.insert(target).second) {
+          count++;
+        }
+      }
+      if (!merge && count > 1) {
+        return _.diag(SPV_ERROR_INVALID_CFG, terminator)
+               << "Selection must be structured";
       }
     }
   }

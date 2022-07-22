@@ -28,6 +28,9 @@ FuzzerPassReplaceOpPhiIdsFromDeadPredecessors::
     : FuzzerPass(ir_context, transformation_context, fuzzer_context,
                  transformations) {}
 
+FuzzerPassReplaceOpPhiIdsFromDeadPredecessors::
+    ~FuzzerPassReplaceOpPhiIdsFromDeadPredecessors() = default;
+
 void FuzzerPassReplaceOpPhiIdsFromDeadPredecessors::Apply() {
   // Keep a vector of the transformations to apply.
   std::vector<TransformationReplaceOpPhiIdFromDeadPredecessor> transformations;

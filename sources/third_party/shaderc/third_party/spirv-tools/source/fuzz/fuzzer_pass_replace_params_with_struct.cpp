@@ -31,6 +31,9 @@ FuzzerPassReplaceParamsWithStruct::FuzzerPassReplaceParamsWithStruct(
     : FuzzerPass(ir_context, transformation_context, fuzzer_context,
                  transformations) {}
 
+FuzzerPassReplaceParamsWithStruct::~FuzzerPassReplaceParamsWithStruct() =
+    default;
+
 void FuzzerPassReplaceParamsWithStruct::Apply() {
   for (const auto& function : *GetIRContext()->module()) {
     auto params =

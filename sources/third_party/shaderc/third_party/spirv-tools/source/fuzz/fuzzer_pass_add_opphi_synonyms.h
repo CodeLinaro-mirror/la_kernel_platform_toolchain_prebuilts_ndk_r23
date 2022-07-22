@@ -30,6 +30,8 @@ class FuzzerPassAddOpPhiSynonyms : public FuzzerPass {
       FuzzerContext* fuzzer_context,
       protobufs::TransformationSequence* transformations);
 
+  ~FuzzerPassAddOpPhiSynonyms() override;
+
   void Apply() override;
 
   // Computes the equivalence classes for the non-pointer and non-irrelevant ids

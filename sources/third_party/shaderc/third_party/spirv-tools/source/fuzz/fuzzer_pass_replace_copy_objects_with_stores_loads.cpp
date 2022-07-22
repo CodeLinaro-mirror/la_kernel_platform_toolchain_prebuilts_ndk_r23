@@ -30,6 +30,9 @@ FuzzerPassReplaceCopyObjectsWithStoresLoads::
     : FuzzerPass(ir_context, transformation_context, fuzzer_context,
                  transformations) {}
 
+FuzzerPassReplaceCopyObjectsWithStoresLoads::
+    ~FuzzerPassReplaceCopyObjectsWithStoresLoads() = default;
+
 void FuzzerPassReplaceCopyObjectsWithStoresLoads::Apply() {
   GetIRContext()->module()->ForEachInst([this](opt::Instruction* instruction) {
     // Randomly decide whether to replace OpCopyObject.

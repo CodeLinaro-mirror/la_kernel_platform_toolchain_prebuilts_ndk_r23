@@ -31,6 +31,9 @@ FuzzerPassAddImageSampleUnusedComponents::
     : FuzzerPass(ir_context, transformation_context, fuzzer_context,
                  transformations) {}
 
+FuzzerPassAddImageSampleUnusedComponents::
+    ~FuzzerPassAddImageSampleUnusedComponents() = default;
+
 void FuzzerPassAddImageSampleUnusedComponents::Apply() {
   // SPIR-V module to help understand the transformation.
   //

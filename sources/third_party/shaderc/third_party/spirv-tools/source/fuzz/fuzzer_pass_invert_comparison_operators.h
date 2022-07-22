@@ -29,6 +29,8 @@ class FuzzerPassInvertComparisonOperators : public FuzzerPass {
       FuzzerContext* fuzzer_context,
       protobufs::TransformationSequence* transformations);
 
+  ~FuzzerPassInvertComparisonOperators() override;
+
   void Apply() override;
 };
 

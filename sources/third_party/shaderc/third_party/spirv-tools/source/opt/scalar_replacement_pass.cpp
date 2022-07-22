@@ -861,9 +861,6 @@ bool ScalarReplacementPass::CheckUsesRelaxed(const Instruction* inst) const {
           case SpvOpStore:
             if (!CheckStore(user, index)) ok = false;
             break;
-          case SpvOpImageTexelPointer:
-            if (!CheckImageTexelPointer(index)) ok = false;
-            break;
           default:
             ok = false;
             break;
@@ -871,10 +868,6 @@ bool ScalarReplacementPass::CheckUsesRelaxed(const Instruction* inst) const {
       });
 
   return ok;
-}
-
-bool ScalarReplacementPass::CheckImageTexelPointer(uint32_t index) const {
-  return index == 2u;
 }
 
 bool ScalarReplacementPass::CheckLoad(const Instruction* inst,

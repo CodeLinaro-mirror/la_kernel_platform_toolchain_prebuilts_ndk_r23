@@ -29,6 +29,8 @@ class FuzzerPassReplaceParamsWithStruct : public FuzzerPass {
       FuzzerContext* fuzzer_context,
       protobufs::TransformationSequence* transformations);
 
+  ~FuzzerPassReplaceParamsWithStruct() override;
+
   void Apply() override;
 };
 

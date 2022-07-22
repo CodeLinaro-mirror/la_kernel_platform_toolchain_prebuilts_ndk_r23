@@ -3776,16 +3776,11 @@ void TIntermBinary::updatePrecision()
 {
      if (getBasicType() == EbtInt || getBasicType() == EbtUint ||
          getBasicType() == EbtFloat || getBasicType() == EbtFloat16) {
-       if (op == EOpRightShift || op == EOpLeftShift) {
-         // For shifts get precision from left side only and thus no need to propagate
-         getQualifier().precision = left->getQualifier().precision;
-       } else {
-         getQualifier().precision = std::max(right->getQualifier().precision, left->getQualifier().precision);
-         if (getQualifier().precision != EpqNone) {
-           left->propagatePrecision(getQualifier().precision);
-           right->propagatePrecision(getQualifier().precision);
-         }
-       }
+        getQualifier().precision = std::max(right->getQualifier().precision, left->getQualifier().precision);
+        if (getQualifier().precision != EpqNone) {
+            left->propagatePrecision(getQualifier().precision);
+            right->propagatePrecision(getQualifier().precision);
+        }
     }
 }
 

@@ -35,6 +35,8 @@ class FuzzerPassInterchangeZeroLikeConstants : public FuzzerPass {
       FuzzerContext* fuzzer_context,
       protobufs::TransformationSequence* transformations);
 
+  ~FuzzerPassInterchangeZeroLikeConstants() override;
+
   void Apply() override;
 
  private:

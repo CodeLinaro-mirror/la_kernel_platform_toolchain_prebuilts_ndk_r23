@@ -29,6 +29,8 @@ class FuzzerPassSplitBlocks : public FuzzerPass {
                         FuzzerContext* fuzzer_context,
                         protobufs::TransformationSequence* transformations);
 
+  ~FuzzerPassSplitBlocks() override;
+
   void Apply() override;
 };
 

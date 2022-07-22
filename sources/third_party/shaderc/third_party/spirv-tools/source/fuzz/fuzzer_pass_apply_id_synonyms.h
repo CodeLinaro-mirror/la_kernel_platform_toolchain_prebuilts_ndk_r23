@@ -30,6 +30,8 @@ class FuzzerPassApplyIdSynonyms : public FuzzerPass {
                             FuzzerContext* fuzzer_context,
                             protobufs::TransformationSequence* transformations);
 
+  ~FuzzerPassApplyIdSynonyms() override;
+
   void Apply() override;
 
  private:

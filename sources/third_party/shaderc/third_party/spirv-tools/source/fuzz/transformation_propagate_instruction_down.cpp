@@ -21,8 +21,8 @@ namespace spvtools {
 namespace fuzz {
 
 TransformationPropagateInstructionDown::TransformationPropagateInstructionDown(
-    protobufs::TransformationPropagateInstructionDown message)
-    : message_(std::move(message)) {}
+    const protobufs::TransformationPropagateInstructionDown& message)
+    : message_(message) {}
 
 TransformationPropagateInstructionDown::TransformationPropagateInstructionDown(
     uint32_t block_id, uint32_t phi_fresh_id,

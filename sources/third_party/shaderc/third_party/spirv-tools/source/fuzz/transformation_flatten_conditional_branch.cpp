@@ -21,8 +21,8 @@ namespace spvtools {
 namespace fuzz {
 
 TransformationFlattenConditionalBranch::TransformationFlattenConditionalBranch(
-    protobufs::TransformationFlattenConditionalBranch message)
-    : message_(std::move(message)) {}
+    const protobufs::TransformationFlattenConditionalBranch& message)
+    : message_(message) {}
 
 TransformationFlattenConditionalBranch::TransformationFlattenConditionalBranch(
     uint32_t header_block_id, bool true_branch_first,
@@ -844,9 +844,7 @@ bool TransformationFlattenConditionalBranch::OpSelectArgumentsAreRestricted(
     case SPV_ENV_UNIVERSAL_1_0:
     case SPV_ENV_UNIVERSAL_1_1:
     case SPV_ENV_UNIVERSAL_1_2:
-    case SPV_ENV_UNIVERSAL_1_3:
-    case SPV_ENV_VULKAN_1_0:
-    case SPV_ENV_VULKAN_1_1: {
+    case SPV_ENV_UNIVERSAL_1_3: {
       return true;
     }
     default:

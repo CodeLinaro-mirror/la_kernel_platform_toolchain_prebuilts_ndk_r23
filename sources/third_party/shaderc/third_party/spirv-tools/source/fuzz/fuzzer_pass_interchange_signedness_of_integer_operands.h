@@ -34,6 +34,8 @@ class FuzzerPassInterchangeSignednessOfIntegerOperands : public FuzzerPass {
       FuzzerContext* fuzzer_context,
       protobufs::TransformationSequence* transformations);
 
+  ~FuzzerPassInterchangeSignednessOfIntegerOperands() override;
+
   void Apply() override;
 
  private:

@@ -28,6 +28,8 @@ class FuzzerPassAddRelaxedDecorations : public FuzzerPass {
       FuzzerContext* fuzzer_context,
       protobufs::TransformationSequence* transformations);
 
+  ~FuzzerPassAddRelaxedDecorations() override;
+
   void Apply() override;
 };
 

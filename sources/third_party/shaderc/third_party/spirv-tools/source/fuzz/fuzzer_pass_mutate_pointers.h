@@ -28,6 +28,8 @@ class FuzzerPassMutatePointers : public FuzzerPass {
                            FuzzerContext* fuzzer_context,
                            protobufs::TransformationSequence* transformations);
 
+  ~FuzzerPassMutatePointers() override;
+
   void Apply() override;
 };
 

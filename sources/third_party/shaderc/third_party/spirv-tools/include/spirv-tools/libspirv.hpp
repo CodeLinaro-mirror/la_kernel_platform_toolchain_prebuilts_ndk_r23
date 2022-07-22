@@ -136,8 +136,6 @@ class ValidatorOptions {
   // 3) Pointers that are actaul parameters on function calls do not have to
   //    point to the same type pointed as the formal parameter.  The types just
   //    need to logically match.
-  // 4) GLSLstd450 Interpolate* instructions can have a load of an interpolant
-  //    for a first argument.
   void SetBeforeHlslLegalization(bool val) {
     spvValidatorOptionsSetBeforeHlslLegalization(options_, val);
   }

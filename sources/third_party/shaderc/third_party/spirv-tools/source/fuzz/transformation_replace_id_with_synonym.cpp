@@ -26,8 +26,9 @@ namespace spvtools {
 namespace fuzz {
 
 TransformationReplaceIdWithSynonym::TransformationReplaceIdWithSynonym(
-    protobufs::TransformationReplaceIdWithSynonym message)
-    : message_(std::move(message)) {}
+    const spvtools::fuzz::protobufs::TransformationReplaceIdWithSynonym&
+        message)
+    : message_(message) {}
 
 TransformationReplaceIdWithSynonym::TransformationReplaceIdWithSynonym(
     protobufs::IdUseDescriptor id_use_descriptor, uint32_t synonymous_id) {
@@ -94,12 +95,8 @@ void TransformationReplaceIdWithSynonym::Apply(
   instruction_to_change->SetInOperand(
       message_.id_use_descriptor().in_operand_index(),
       {message_.synonymous_id()});
-  ir_context->get_def_use_mgr()->EraseUseRecordsOfOperandIds(
-      instruction_to_change);
-  ir_context->get_def_use_mgr()->AnalyzeInstUse(instruction_to_change);
-
-  // No analyses need to be invalidated, since the transformation is local to a
-  // block, and the def-use analysis has been updated.
+  ir_context->InvalidateAnalysesExceptFor(
+      opt::IRContext::Analysis::kAnalysisNone);
 }
 
 protobufs::Transformation TransformationReplaceIdWithSynonym::ToMessage()
